@@ -797,9 +797,10 @@ const TabletDashboard = () => {
                 letterSpacing: '0.05em',
                 opacity: 0.7,
                 marginBottom: '1rem',
+		whiteSpace: 'nowrap',
               }}
             >
-              {time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}
+              {time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }).replace(' ', '\u00A0')}
             </div>
             
             <div
@@ -823,9 +824,10 @@ const TabletDashboard = () => {
                 textShadow: `0 0 40px ${currentTheme.accent}80, 0 0 80px ${currentTheme.accent}40`,
                 marginBottom: '2rem',
                 animation: 'glow 2s ease-in-out infinite alternate',
+		whiteSpace: 'nowrap',
               }}
             >
-              {time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}
+              {time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }).replace(' ', '\u00A0')}
             </div>
 
             <div
