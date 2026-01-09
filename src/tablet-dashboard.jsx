@@ -778,7 +778,7 @@ const TabletDashboard = () => {
           <div style={{ textAlign: 'center' }}>
             <div
               style={{
-                fontSize: 'clamp(8rem, 18vw, 14rem)',
+                fontSize: 'clamp(6rem, 14vw, 11rem)',
                 fontWeight: '900',
                 letterSpacing: '0.05em',
                 textShadow: `0 0 50px ${currentTheme.accent}FF, 0 0 100px ${currentTheme.accent}80`,
@@ -818,7 +818,7 @@ const TabletDashboard = () => {
           <>
             <div
               style={{
-                fontSize: 'clamp(6rem, 15vw, 12rem)',
+                fontSize: 'clamp(4rem, 12vw, 9rem)',
                 fontWeight: '900',
                 letterSpacing: '0.05em',
                 textShadow: `0 0 40px ${currentTheme.accent}80, 0 0 80px ${currentTheme.accent}40`,
