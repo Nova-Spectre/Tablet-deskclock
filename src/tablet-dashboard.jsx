@@ -5,8 +5,14 @@ const TabletDashboard = () => {
   const [time, setTime] = useState(new Date());
   const [weather, setWeather] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [theme, setTheme] = useState('sunset');
-  const [darkMode, setDarkMode] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('dashboardTheme');
+    return saved || 'sunset';
+  });
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem('dashboardDarkMode');
+    return saved === 'true';
+  });
   const [timers, setTimers] = useState([]);
   const [stopwatches, setStopwatches] = useState([]);
   const [reminders, setReminders] = useState([]);
@@ -177,6 +183,16 @@ const TabletDashboard = () => {
     if (code <= 77) return '🌨️ Snowy';
     return '🌤️ Cloudy';
   };
+
+  // Save theme to localStorage
+  useEffect(() => {
+    localStorage.setItem('dashboardTheme', theme);
+  }, [theme]);
+
+  // Save dark mode to localStorage
+  useEffect(() => {
+    localStorage.setItem('dashboardDarkMode', darkMode);
+  }, [darkMode]);
 
   const addTimer = () => {
     if (timerInput) {
