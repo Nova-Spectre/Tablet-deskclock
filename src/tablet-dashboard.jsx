@@ -112,19 +112,19 @@ const TabletDashboard = () => {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
-    
+
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
-    
+
     oscillator.frequency.value = 800;
     oscillator.type = 'sine';
-    
+
     gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
     gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-    
+
     oscillator.start(audioContext.currentTime);
     oscillator.stop(audioContext.currentTime + 0.5);
-    
+
     setTimeout(() => {
       const osc2 = audioContext.createOscillator();
       const gain2 = audioContext.createGain();
@@ -182,11 +182,11 @@ const TabletDashboard = () => {
     if (timerInput) {
       const minutes = parseInt(timerInput);
       if (minutes > 0) {
-        setTimers([...timers, { 
-          id: Date.now(), 
-          duration: minutes * 60, 
+        setTimers([...timers, {
+          id: Date.now(),
+          duration: minutes * 60,
           remaining: minutes * 60,
-          originalMinutes: minutes 
+          originalMinutes: minutes
         }]);
         setTimerInput('');
       }
@@ -201,11 +201,11 @@ const TabletDashboard = () => {
     if (stopwatchInput) {
       const minutes = parseInt(stopwatchInput);
       if (minutes > 0) {
-        setStopwatches([...stopwatches, { 
-          id: Date.now(), 
-          duration: minutes * 60, 
+        setStopwatches([...stopwatches, {
+          id: Date.now(),
+          duration: minutes * 60,
           remaining: minutes * 60,
-          originalMinutes: minutes 
+          originalMinutes: minutes
         }]);
         setStopwatchInput('');
       }
@@ -257,9 +257,9 @@ const TabletDashboard = () => {
       const reminderTime = new Date();
       const [hours, minutes] = reminderTimeInput.split(':');
       reminderTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-      
-      setReminders([...reminders, { 
-        id: Date.now(), 
+
+      setReminders([...reminders, {
+        id: Date.now(),
         text: reminderInput,
         time: reminderTime.getTime(),
         timeString: reminderTimeInput
@@ -306,9 +306,11 @@ const TabletDashboard = () => {
         position: 'relative',
         overflow: 'hidden',
         transition: 'all 0.5s ease',
+        transform: 'translateZ(0)',
+        willChange: 'transform',
       }}
     >
-      <div 
+      <div
         className={`animated-bg ${currentTheme.animation}`}
         style={{
           position: 'absolute',
@@ -318,6 +320,8 @@ const TabletDashboard = () => {
           bottom: 0,
           opacity: 0.15,
           pointerEvents: 'none',
+          transform: 'translateZ(0)',
+          willChange: 'opacity',
         }}
       >
         {[...Array(30)].map((_, i) => (
@@ -337,7 +341,7 @@ const TabletDashboard = () => {
             }}
           />
         ))}
-        
+
         {currentTheme.animation.includes('ocean') && (
           <>
             <div className="wave wave1"></div>
@@ -345,7 +349,7 @@ const TabletDashboard = () => {
             <div className="wave wave3"></div>
           </>
         )}
-        
+
         {currentTheme.animation.includes('neon') && (
           [...Array(50)].map((_, i) => (
             <div
@@ -444,9 +448,11 @@ const TabletDashboard = () => {
           backdropFilter: 'blur(30px)',
           padding: '2rem',
           overflowY: 'auto',
-          transition: 'right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+          transition: 'transform 0.3s ease-out',
+          transform: menuOpen ? 'translateX(0)' : 'translateX(450px)',
           zIndex: 999,
           boxShadow: '-10px 0 30px rgba(0,0,0,0.3)',
+          willChange: 'transform',
         }}
       >
         <h2 style={{ fontSize: '2rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -789,7 +795,7 @@ const TabletDashboard = () => {
             >
               ⏱️ {formatTime(stopwatches[0].remaining)}
             </div>
-            
+
             <div
               style={{
                 fontSize: 'clamp(2rem, 5vw, 3.5rem)',
@@ -797,12 +803,12 @@ const TabletDashboard = () => {
                 letterSpacing: '0.05em',
                 opacity: 0.7,
                 marginBottom: '1rem',
-		whiteSpace: 'nowrap',
+                whiteSpace: 'nowrap',
               }}
             >
               {time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }).replace(' ', '\u00A0')}
             </div>
-            
+
             <div
               style={{
                 fontSize: 'clamp(1.2rem, 2.5vw, 2rem)',
@@ -824,7 +830,7 @@ const TabletDashboard = () => {
                 textShadow: `0 0 40px ${currentTheme.accent}80, 0 0 80px ${currentTheme.accent}40`,
                 marginBottom: '2rem',
                 animation: 'glow 2s ease-in-out infinite alternate',
-		whiteSpace: 'nowrap',
+                whiteSpace: 'nowrap',
               }}
             >
               {time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }).replace(' ', '\u00A0')}
@@ -890,10 +896,26 @@ const TabletDashboard = () => {
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap');
         
         * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.particle,
+.star,
+.wave {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
         @keyframes float-particle {
           0%, 100% { 
